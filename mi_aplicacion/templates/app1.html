@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas y Gráfico</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Estilos generales */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            position: relative; /* Añadido para el botón fijo */
+        }
+
+        .container {
+            max-width: 1200px; /* Ancho máximo del contenido */
+            margin: 20px auto; /* Centrado y margen exterior */
+            padding: 0 20px; /* Espacio alrededor del contenido */
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .title {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .content {
+            display: flex; /* Contenedor principal en flexbox */
+            justify-content: space-between; /* Espacio entre elementos principales */
+            flex-wrap: wrap; /* Envolver elementos cuando no caben en una línea */
+        }
+
+        .graph-section {
+            flex: 1 1 30%; /* Ancho fijo de la barra lateral, limitado al 30% */
+            margin-left: 20px; /* Espacio a la izquierda */
+        }
+
+        .graph-section h2 {
+            margin-bottom: 10px;
+        }
+
+        .graph {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .graph-large {
+            max-width: 100%; /* Ancho máximo del gráfico */
+            max-height: 700px; /* Altura máxima del gráfico */
+            display: block;
+            margin: 0 auto; /* Centrar el gráfico horizontalmente */
+        }
+
+        .sidebar {
+            flex: 1 1 70%; /* Ocupa el espacio restante, pero limitado al 70% */
+            margin-left: 20px; /* Espacio a la izquierda */
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .card-header h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        /* Estilos específicos para el gráfico circular */
+        .graph-large-circle {
+            max-width: 100%; /* Ancho máximo del gráfico circular */
+            max-height: 900px; /* Altura máxima del gráfico circular */
+            display: block;
+            margin: 0 auto; /* Centrar el gráfico horizontalmente */
+        }
+
+        /* Estilos para el botón fijo */
+        .fixed-button {
+            position: fixed;
+            top: 20px; /* Distancia desde arriba */
+            left: 20px; /* Distancia desde la izquierda */
+            z-index: 1000; /* Capa superior */
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column; /* Apilamiento de elementos en dispositivos pequeños */
+            }
+
+            .graph-section,
+            .sidebar {
+                width: 100%; /* Ancho completo en dispositivos pequeños */
+                margin-left: 0; /* Sin margen izquierdo en dispositivos pequeños */
+                margin-right: 0; /* Sin margen derecho en dispositivos pequeños */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="title">Estadísticas y Gráfico de Partidos</h1>
+        </header>
+
+        <main class="content">
+            <aside class="sidebar">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Seleccione un mapa</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="GET" action="" id="selectForm">
+                            <div class="form-group">
+                                <label for="mapa_seleccionado">Seleccione un mapa para ver la distribución de victorias:</label>
+                                <select id="mapa_seleccionado" name="mapa_seleccionado" class="form-control" onchange="document.getElementById('selectForm').submit()">
+                                    <option value="">Seleccione un mapa...</option>
+                                    {% for mapa in mapas %}
+                                        <option value="{{ mapa }}" {% if mapa == mapa_seleccionado %} selected {% endif %}>{{ mapa }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                {% if mapa_seleccionado %}
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Distribución de victorias</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="graph">
+                            <img src="data:image/png;base64,{{ grafico_pie }}" alt="Gráfico Circular" class="graph-large-circle">
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </aside>
+
+            <section class="graph-section">
+                <h2>Gráfico de Partidos Ganados por Equipo y Mapa</h2>
+                <div class="graph">
+                    <img src="data:image/png;base64,{{ grafico_barras }}" alt="Gráfico de Barras" class="graph-large">
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Botón fijo para volver al índice -->
+    <a href="{% url 'index' %}" class="btn btn-primary fixed-button">Volver al Índice</a>
+
+    <!-- Bootstrap JavaScript (Opcional) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

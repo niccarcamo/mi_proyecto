@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('../static/images/csgo.png'); /* Ruta de tu imagen de fondo */
+            background-size: cover; /* Ajusta la imagen para cubrir toda la pantalla */
+        
+            font-family: Arial, sans-serif; /* Tipo de fuente para el texto en la página */
+            color: #000000; /* Color del texto */
+        }
+
+        .menu {
+            position: absolute; /* Posición absoluta para colocar el menú en la esquina */
+            top: 20px; /* Distancia desde la parte superior */
+            left: 20px; /* Distancia desde la izquierda */
+            z-index: 1000; /* Capa z-index para asegurar que esté sobre otros elementos */
+        }
+
+        .menu button {
+            padding: 10px 20px; /* Padding interno para los botones */
+            margin-right: 10px; /* Margen derecho entre botones */
+            background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+            border: none; /* Sin borde */
+            border-radius: 5px; /* Borde redondeado */
+            cursor: pointer; /* Cursor de puntero al pasar */
+            font-size: 16px; /* Tamaño de fuente */
+            color: #333; /* Color del texto */
+        }
+
+        .content {
+            padding: 20px; /* Añade un poco de espacio al contenido para que no esté pegado al borde */
+            background-color: rgba(255, 255, 255, 0.8); /* Color de fondo semi-transparente para el contenido */
+            max-width: 800px; /* Ancho máximo del contenido para que no se extienda demasiado */
+            margin: 0 auto; /* Centra el contenido horizontalmente */
+            border-radius: 10px; /* Borde redondeado para el contenido */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera alrededor del contenido */
+        }
+
+        .content h1 {
+            text-align: center; /* Centra el título */
+        }
+
+        .content p {
+            line-height: 1.6; /* Espaciado entre líneas para un mejor legibilidad */
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <button onclick="window.location.href='/app1'">App 1</button>
+        <button onclick="window.location.href='/app2'">App 2</button>
+        <button onclick="window.location.href='/app3'">App 3</button>
+    </div>
+
+    <div class="content">
+        <h1>Contenido de tu página con imagen de fondo</h1>
+        <p>Aquí puedes escribir el texto y colocar otros elementos de tu página.</p>
+    </div>
+</body>
+</html>
